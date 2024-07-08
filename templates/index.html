@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="font-weight-light text-center">Bienvenue</h1>
+            <div class="text-center">
+                <img src="{{ url_for('static', filename='logo/future_vision.png') }}" alt="Logo Vision Future" class="img-fluid">
+            </div>
+            <section>
+                <h2 class="text-center">Aperçu du Projet</h2>
+                <p class="text-center">Notre application est dédiée à <strong>l'analyse des performances des modèles de segmentation d'images avancés</strong>, en se concentrant sur le jeu de données <strong>Cityscapes</strong>. Pour une gestion efficace, nous avons ciblé huit catégories clés:</p>
+                <ul class="list-unstyled text-center">
+                    <li>Plat</li>
+                    <li>Humain</li>
+                    <li>Véhicule</li>
+                    <li>Construction</li>
+                    <li>Objet</li>
+                    <li>Nature</li>
+                    <li>Ciel</li>
+                    <li>Vide</li>
+                </ul>
+                <p class="text-center">Le projet a débuté avec l'implémentation d'un modèle basé sur <strong>ResNet50</strong>. Dans notre quête d'excellence, nous explorons désormais <strong>ResNet101 avec OCR</strong>, visant à surpasser nos précédentes performances de segmentation. De plus, nous intégrons <strong>ResNet101 avec Attention Consciente du Contexte (CAA)</strong> pour une analyse d'image encore plus raffinée et précise.</p>
+                <p class="text-center">Ci-dessous, découvrez des exemples issus de Cityscapes, reflétant la complexité des environnements urbains que nos modèles s'efforcent de segmenter.</p>
+            </section>
+            <div class="button-container text-center">
+                <a href="/prediction/" class="btn btn-primary btn-lg" role="button" aria-label="Tester les trois modèles">
+                    <i class="fas fa-image"></i> Tester les Trois Modèles
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
