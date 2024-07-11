@@ -21,12 +21,29 @@
                     <li>Ciel</li>
                     <li>Vide</li>
                 </ul>
-                <p class="text-center">Le projet a débuté avec l'implémentation d'un modèle basé sur <strong>ResNet50</strong>. Dans notre quête d'excellence, nous explorons désormais <strong>ResNet101 avec OCR</strong>, visant à surpasser nos précédentes performances de segmentation. De plus, nous intégrons <strong>ResNet101 avec Attention Consciente du Contexte (CAA)</strong> pour une analyse d'image encore plus raffinée et précise.</p>
+                <p class="text-center">Le projet a débuté avec l'implémentation d'un modèle basé sur <strong>ResNet50</strong>. Nous explorons désormais l'amélioration de nos performances de segmentation avec l'intégration de <strong>ResNet101 avec la Représentation Contextuelle d'Objet (OCR)</strong>. Notre approche s'inspire largement de <a href="https://arxiv.org/abs/1909.11065" target="_blank">cette étude</a>, qui détaille des méthodes avancées pour la segmentation d'images.</p>
+
                 <p class="text-center">Ci-dessous, découvrez des exemples issus de Cityscapes, reflétant la complexité des environnements urbains que nos modèles s'efforcent de segmenter.</p>
+            </section>
+            <!-- Added section for displaying the graphics -->
+            <section class="text-center my-5">
+                <h2>Performances des Modèles</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Modèle de Base</h3>
+                        <img src="{{ url_for('static', filename='logo/baseline.png') }}" alt="Graphique du modèle de base" class="img-fluid">
+                        <p>Graphique de la perte et du Mean IOU pour le modèle de base.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Modèle OCR</h3>
+                        <img src="{{ url_for('static', filename='logo/ocrgraph.png') }}" alt="Graphique du modèle OCR" class="img-fluid">
+                        <p>Graphique de la perte et du Mean IOU pour le modèle OCR.</p>
+                    </div>
+                </div>
             </section>
             <div class="button-container text-center">
                 <a href="/prediction/" class="btn btn-primary btn-lg" role="button" aria-label="Tester les trois modèles">
-                    <i class="fas fa-image"></i> Tester les Trois Modèles
+                    <i class="fas fa-image"></i> Tester les Modèles
                 </a>
             </div>
         </div>

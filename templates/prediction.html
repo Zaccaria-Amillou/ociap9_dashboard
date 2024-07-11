@@ -35,47 +35,31 @@
           </div>
         </div>
     </form>
-    <!-- Button to submit for prediction -->
-    <div class="container text-center">
+    <!-- Form to choose segmentation model -->
+    <div class="container text-center py-4">
       <form method="post" action="/predict">
+        <label for="model_choice">Choose a segmentation model:</label>
+        <select class="form-control" id="model_choice" name="model_choice">
+          <option value="Classic">ResNet50</option>
+          <option value="New">ResNet101 - OCR</option>
+        </select>
+        <br>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
-    <!-- Display of the predictions from the three models -->
+    <!-- Display of the predictions from the selected model -->
     {% if sended %}
     <div class="d-flex flex-column justify-content-center">
       <h2 class="p-2 text-center">Model Predictions</h2>
-      <!-- Prediction from Classic Model -->
+      <!-- Prediction from the selected model -->
       <div class="d-flex flex-column flex-md-row justify-content-center">
         <div class="p-2">
-          <h3 class="p-2 text-center">Resnet50</h3>
-          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/overlay_classic.png')}}">
+          <h3 class="p-2 text-center">{{ model_choice }}</h3>
+          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/overlay_' + model_choice.lower() + '.png')}}">
         </div>
         <div class="p-2">
-          <h3 class="p-2 text-center">Resnet50 Mask</h3>
-          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/mask_predicted_classic.png')}}">
-        </div>
-      </div>
-      <!-- Prediction from New Model -->
-      <div class="d-flex flex-column flex-md-row justify-content-center">
-        <div class="p-2">
-          <h3 class="p-2 text-center">ResNet101 - OCR</h3>
-          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/overlay_new.png')}}">
-        </div>
-        <div class="p-2">
-          <h3 class="p-2 text-center">ResNet101 - OCR Mask</h3>
-          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/mask_predicted_new.png')}}">
-        </div>
-      </div>
-      <!-- Prediction from Advanced Model -->
-      <div class="d-flex flex-column flex-md-row justify-content-center">
-        <div class="p-2">
-          <h3 class="p-2 text-center">ResNet101 - CAA</h3>
-          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/overlay_advanced.png')}}">
-        </div>
-        <div class="p-2">
-          <h3 class="p-2 text-center">ResNet101 - CAA Mask</h3>
-          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/mask_predicted_advanced.png')}}">
+          <h3 class="p-2 text-center">{{ model_choice }} Mask</h3>
+          <img class="p-2 img-fluid" src="{{url_for('static', filename='data/predict/mask_predicted_' + model_choice.lower() + '.png')}}">
         </div>
       </div>
     </div>

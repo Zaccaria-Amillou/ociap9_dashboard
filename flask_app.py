@@ -88,11 +88,15 @@ def load_model(model_choice):
         model_path = "model/ResNet50_U-Net_augmented.tflite"
     elif model_choice == "New":
         model_path = "model/ResNet101_Coarse_U-Net_OCR.tflite"
-    else:  # Assuming the third option is "Advanced"
-        model_path = "model/ResNet101_U-Net_CAA_ augmented.tflite"
+    elif model_choice == "Advanced":
+        model_path = "model/ResNet101_U-Net_CAA_augmented.tflite"
+    else:
+        raise ValueError("Invalid model choice")
+
     model = tf.lite.Interpreter(model_path=model_path)
     model.allocate_tensors()
-    return model, model_choice
+    return model
+
 
 
 
@@ -152,28 +156,26 @@ def post_prediction():
     return redirect(url_for("get_prediction", file=selected_id))
 
 
-@app.route("/predict/", methods=["GET", "POST"])
+@app.route("/predict/", methods=["POST"])
 def predictImage():
-    """Route pour prédire une image avec trois modèles différents."""
-    img_path = img_paths + path_files[selected_id - 1] + "leftImg8bit.png"
+    global selected_id
+    if request.method == "POST" and request.form.get("file"):
+        selected_id = int(request.form.get("file"))
 
-    # Load the original image and resize it
-    original_img = cv2.imread(img_path)
-    original_img_resized = cv2.resize(original_img, (400, 200))
+    if request.method == "POST" and request.form.get("model_choice"):
+        model_choice = request.form.get("model_choice")
 
-    # Prepare the image once for all models
-    img = get_data_prepared(img_path, (256, 256))
-    img = img.astype("float32")
+        # Load the selected model
+        model = load_model(model_choice)
 
-    # Load the three models
-    models = {
-        "Classic": load_model("Classic")[0],
-        "New": load_model("New")[0],
-        "Advanced": load_model("Advanced")[0]
-    }
+        # Prepare data and perform prediction
+        img_path = img_paths + path_files[selected_id - 1] + "leftImg8bit.png"
+        original_img = cv2.imread(img_path)
+        original_img_resized = cv2.resize(original_img, (400, 200))
+        img = get_data_prepared(img_path, (256, 256))
+        img = img.astype("float32")
 
-    for model_name, model in models.items():
-        # Predict with each model
+        # Perform prediction using the selected model
         input_details = model.get_input_details()
         model.set_tensor(input_details[0]["index"], img)
         model.invoke()
@@ -192,13 +194,19 @@ def predictImage():
         # Overlay the mask on the resized original image
         overlay = cv2.addWeighted(original_img_resized, 0.6, resized_m, 0.4, 0)
 
-        # Save the prediction image and the overlay image for each model
-        cv2.imwrite(f"static/data/predict/mask_predicted_{model_name.lower()}.png", resized_m)
-        cv2.imwrite(f"static/data/predict/overlay_{model_name.lower()}.png", overlay)
+        # Save the prediction image and the overlay image for the selected model
+        cv2.imwrite(f"static/data/predict/mask_predicted_{model_choice.lower()}.png", resized_m)
+        cv2.imwrite(f"static/data/predict/overlay_{model_choice.lower()}.png", overlay)
 
-    return render_template(
-        "prediction.html", sended=True, nb_image=NB_IMAGES, selected=selected_id
-    )
+        # Render the template with results
+        return render_template(
+            "prediction.html", sended=True, nb_image=NB_IMAGES, selected=selected_id, model_choice=model_choice
+        )
+
+    # If model_choice is not received properly from the form, handle appropriately
+    return render_template("prediction.html", sended=False, nb_image=NB_IMAGES, selected=selected_id)
+
+
 
 
 
